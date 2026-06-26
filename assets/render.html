@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { margin: 0; background: #0f0f23; display: flex; flex-direction: column; align-items: center; padding: 40px; font-family: Arial; gap: 60px; }
+  canvas { border-radius: 16px; box-shadow: 0 0 60px rgba(88,101,242,0.3); }
+  .label { color: #8888aa; font-size: 14px; margin-top: 8px; text-align: center; }
+  h2 { color: #ffffff; margin: 0 0 10px 0; }
+</style>
+</head>
+<body>
+
+<div>
+  <h2>🖼️ Logo (512x512) — Avatar</h2>
+  <canvas id="logoCanvas" width="512" height="512"></canvas>
+  <div class="label">Screenshot or record this for PNG/GIF/WEBP</div>
+</div>
+
+<div>
+  <h2>🖼️ Banner (600x240) — Discord Banner</h2>
+  <canvas id="bannerCanvas" width="600" height="240"></canvas>
+  <div class="label">Screenshot or record this for PNG/GIF/WEBP</div>
+</div>
+
+<script>
+const logoCanvas = document.getElementById('logoCanvas');
+const lctx = logoCanvas.getContext('2d');
+const bannerCanvas = document.getElementById('bannerCanvas');
+const bctx = bannerCanvas.getContext('2d');
+
+let time = 0;
+
+function drawLogo() {
+  const c = lctx;
+  const w = 512, h = 512;
+  const cx = w/2, cy = h/2;
+
+  // Background
+  const bgGrad = c.createRadialGradient(cx, cy, 0, cx, cy, 300);
+  bgGrad.addColorStop(0, '#1a1a3e');
+  bgGrad.addColorStop(1, '#0f0f23');
+  c.fillStyle = bgGrad;
+  c.beginPath();
+  c.arc(cx, cy, 240, 0, Math.PI*2);
+  c.fill();
+
+  // Outer ring (animated)
+  const rot = time * 0.02;
+  c.strokeStyle = `rgba(88,101,242,${0.2 + Math.sin(time*0.03)*0.1})`;
+  c.lineWidth = 2;
+  c.setLineDash([6, 6]);
+  c.beginPath();
+  c.arc(cx, cy, 230, rot, rot + Math.PI*1.5);
+  c.stroke();
+  c.setLineDash([]);
+
+  // Shield
+  const pulse = 1 + Math.sin(time * 0.04) * 0.02;
+  c.save();
+  c.translate(cx, cy);
+  c.scale(pulse, pulse);
+  c.translate(-cx, -cy);
+
+  const shieldGrad = c.createLinearGradient(cx-100, 80, cx+100, 400);
+  shieldGrad.addColorStop(0, '#5865F2');
+  shieldGrad.addColorStop(1, '#4752C4');
+  c.fillStyle = shieldGrad;
+  c.beginPath();
+  c.moveTo(cx, 120);
+  c.lineTo(cx + 130, 160);
+  c.lineTo(cx + 130, 260);
+  c.quadraticCurveTo(cx + 130, 340, cx, 380);
+  c.quadraticCurveTo(cx - 130, 340, cx - 130, 260);
+  c.lineTo(cx - 130, 160);
+  c.closePath();
+  c.fill();
+
+  // Shield glow
+  c.shadowColor = '#5865F2';
+  c.shadowBlur = 20;
+  c.strokeStyle = '#7c8aff';
+  c.lineWidth = 1.5;
+  c.stroke();
+  c.shadowBlur = 0;
+
+  // Star
+  const starPulse = 1 + Math.sin(time * 0.05) * 0.1;
+  c.save();
+  c.translate(cx, cy-30);
+  c.rotate(time * 0.01);
+  c.scale(starPulse, starPulse);
+  c.translate(-cx, -cy+30);
+
+  c.fillStyle = '#57F287';
+  c.shadowColor = '#57F287';
+  c.shadowBlur = 15;
+  const starPoints = [];
+  for (let i = 0; i < 10; i++) {
+    const angle = (i * Math.PI * 2) / 10 - Math.PI/2;
+    const r = i % 2 === 0 ? 40 : 18;
+    starPoints.push({ x: cx + Math.cos(angle) * r, y: cy - 30 + Math.sin(angle) * r });
+  }
+  c.beginPath();
+  c.moveTo(starPoints[0].x, starPoints[0].y);
+  for (let i = 1; i < 10; i++) c.lineTo(starPoints[i].x, starPoints[i].y);
+  c.closePath();
+  c.fill();
+  c.shadowBlur = 0;
+  c.restore();
+
+  c.restore();
+
+  // F text with glow
+  c.shadowColor = '#5865F2';
+  c.shadowBlur = 10;
+  c.fillStyle = '#ffffff';
+  c.font = 'bold 72px Arial';
+  c.textAlign = 'center';
+  c.textBaseline = 'middle';
+  c.fillText('F', cx, cy + 100);
+  c.shadowBlur = 0;
+
+  // Dots
+  for (let i = 0; i < 3; i++) {
+    const dotY = 420 + i * 12;
+    const alpha = 0.4 + Math.sin(time * 0.05 + i) * 0.3;
+    c.fillStyle = i === 1 ? `rgba(87,242,135,${alpha})` : `rgba(88,101,242,${alpha})`;
+    c.beginPath();
+    c.arc(cx - 15 + i * 15, dotY, 3, 0, Math.PI*2);
+    c.fill();
+  }
+}
+
+function drawBanner() {
+  const c = bctx;
+  const w = 600, h = 240;
+
+  // Background
+  const bgGrad = c.createLinearGradient(0, 0, w, h);
+  bgGrad.addColorStop(0, '#0f0f23');
+  bgGrad.addColorStop(0.5, '#1a1a3e');
+  bgGrad.addColorStop(1, '#0f0f23');
+  c.fillStyle = bgGrad;
+  c.fillRect(0, 0, w, h);
+
+  // Grid
+  c.strokeStyle = `rgba(88,101,242,${0.05 + Math.sin(time*0.02)*0.02})`;
+  c.lineWidth = 0.5;
+  for (let x = 0; x < w; x += 50) {
+    c.beginPath(); c.moveTo(x, 0); c.lineTo(x, h); c.stroke();
+  }
+  for (let y = 0; y < h; y += 40) {
+    c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke();
+  }
+
+  // Animated accent lines
+  const glowIntensity = 0.6 + Math.sin(time * 0.04) * 0.4;
+  const grad = c.createLinearGradient(0, 0, w, 0);
+  grad.addColorStop(0, 'transparent');
+  grad.addColorStop(0.2, `rgba(88,101,242,${glowIntensity})`);
+  grad.addColorStop(0.8, `rgba(87,242,135,${glowIntensity})`);
+  grad.addColorStop(1, 'transparent');
+  c.fillStyle = grad;
+  c.fillRect(0, 0, w, 3);
+  c.fillRect(0, h-3, w, 3);
+
+  // Shield icon
+  c.save();
+  const bounce = Math.sin(time * 0.03) * 3;
+  c.translate(55, 80 + bounce);
+  const shieldGrad2 = c.createLinearGradient(0, 0, 100, 100);
+  shieldGrad2.addColorStop(0, '#5865F2');
+  shieldGrad2.addColorStop(1, '#4752C4');
+  c.fillStyle = shieldGrad2;
+  c.beginPath();
+  c.moveTo(50, 0);
+  c.lineTo(100, 25);
+  c.lineTo(100, 90);
+  c.quadraticCurveTo(100, 140, 50, 155);
+  c.quadraticCurveTo(0, 140, 0, 90);
+  c.lineTo(0, 25);
+  c.closePath();
+  c.fill();
+  c.strokeStyle = '#7c8aff';
+  c.lineWidth = 1;
+  c.stroke();
+
+  // Star
+  c.fillStyle = '#57F287';
+  c.shadowColor = '#57F287';
+  c.shadowBlur = 10;
+  const sp = [];
+  for (let i = 0; i < 10; i++) {
+    const a = (i * Math.PI * 2) / 10 - Math.PI/2;
+    const r = i % 2 === 0 ? 22 : 10;
+    sp.push({ x: 50 + Math.cos(a) * r, y: 55 + Math.sin(a) * r });
+  }
+  c.beginPath();
+  c.moveTo(sp[0].x, sp[0].y);
+  for (let i = 1; i < 10; i++) c.lineTo(sp[i].x, sp[i].y);
+  c.closePath();
+  c.fill();
+  c.shadowBlur = 0;
+  c.restore();
+
+  // FRAUNIX text
+  c.shadowColor = '#5865F2';
+  c.shadowBlur = 8;
+  c.fillStyle = '#ffffff';
+  c.font = 'bold 44px Segoe UI, Arial';
+  c.textAlign = 'left';
+  c.textBaseline = 'middle';
+  c.fillText('FRAUNIX', 145, 72);
+  c.shadowBlur = 0;
+
+  // v1.0 badge
+  c.fillStyle = `rgba(88,101,242,${0.7 + Math.sin(time*0.05)*0.2})`;
+  c.beginPath();
+  c.roundRect(380, 56, 55, 22, 12);
+  c.fill();
+  c.fillStyle = '#ffffff';
+  c.font = 'bold 11px Arial';
+  c.textAlign = 'center';
+  c.fillText('v1.0', 407, 68);
+
+  // Tagline
+  c.fillStyle = '#a0a0c0';
+  c.font = '15px Arial';
+  c.textAlign = 'left';
+  c.fillText('Precision Moderation for Modern Communities', 145, 105);
+
+  // Feature pills
+  const pills = [
+    { label: '45+ COMMANDS', x: 145, color: '#5865F2', bg: 'rgba(88,101,242,0.2)' },
+    { label: 'REALTIME', x: 238, color: '#57F287', bg: 'rgba(87,242,135,0.15)' },
+    { label: 'PREMIUM UI', x: 320, color: '#FEE75C', bg: 'rgba(254,231,92,0.15)' },
+  ];
+  pills.forEach(p => {
+    c.fillStyle = p.bg;
+    c.beginPath();
+    c.roundRect(p.x, 130, 75, 22, 11);
+    c.fill();
+    c.fillStyle = p.color;
+    c.font = 'bold 9px Arial';
+    c.textAlign = 'center';
+    c.fillText(p.label, p.x + 37, 142);
+  });
+
+  // Right circles
+  c.strokeStyle = `rgba(88,101,242,${0.1 + Math.sin(time*0.03)*0.05})`;
+  c.lineWidth = 1.5;
+  [30, 50, 70].forEach((r, i) => {
+    c.beginPath();
+    c.arc(510, 80 + i*5, r, time*0.01, time*0.01 + Math.PI*1.5);
+    c.stroke();
+  });
+
+  // Bottom dots
+  for (let i = 0; i < 5; i++) {
+    const alpha = 0.3 + Math.sin(time * 0.05 + i * 0.8) * 0.3;
+    c.fillStyle = i % 2 === 0 ? `rgba(88,101,242,${alpha})` : `rgba(87,242,135,${alpha})`;
+    c.beginPath();
+    c.arc(283 + i * 14, 208, 2, 0, Math.PI*2);
+    c.fill();
+  }
+}
+
+function animate() {
+  time++;
+  lctx.clearRect(0, 0, 512, 512);
+  bctx.clearRect(0, 0, 600, 240);
+  drawLogo();
+  drawBanner();
+  requestAnimationFrame(animate);
+}
+
+animate();
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+{
+  "token": "YOUR_BOT_TOKEN_HERE",
+  "clientId": "YOUR_CLIENT_ID_HERE",
+  "guildId": "YOUR_GUILD_ID_HERE",
+  "prefix": "!",
+  "owners": [],
+  "bio": "Elite moderation bot engineered for precision, speed, and reliability.",
+  "colors": {
+    "primary": "#5865F2",
+    "secondary": "#9B59B6",
+    "accent": "#00D4AA",
+    "success": "#57F287",
+    "warning": "#FEE75C",
+    "error": "#ED4245",
+    "info": "#5865F2",
+    "neutral": "#95A5A6",
+    "pink": "#FF6B9D",
+    "orange": "#FF8C42",
+    "gradient": {
+      "start": "#5865F2",
+      "mid": "#9B59B6",
+      "end": "#FF6B9D"
+    },
+    "rainbow": ["#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#0000FF", "#4B0082", "#8B00FF"]
+  },
+  "emojis": {
+    "success": "✅",
+    "error": "❌",
+    "warning": "⚠️",
+    "loading": "⏳",
+    "moderation": "🛡️",
+    "info": "ℹ️",
+    "ping": "🏓",
+    "ban": "🔨",
+    "kick": "👢",
+    "mute": "🔇",
+    "unmute": "🔊",
+    "purge": "🧹",
+    "warn": "📋",
+    "lock": "🔒",
+    "unlock": "🔓",
+    "slowmode": "🐢",
+    "nuke": "💣",
+    "voice": "🔊",
+    "user": "👤",
+    "server": "🏠",
+    "link": "🔗",
+    "clock": "🕐"
+  }
+}

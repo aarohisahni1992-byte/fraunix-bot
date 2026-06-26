@@ -1,0 +1,15 @@
+{
+  "name": "fraunix-v1",
+  "version": "1.0.0",
+  "description": "A powerful Discord moderation bot with advanced features and animations",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node src/index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "gif-encoder-2": "^1.0.5",
+    "ms": "^2.1.3"
+  }
+}

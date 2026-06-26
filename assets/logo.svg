@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#16213e"/>
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5865F2"/>
+      <stop offset="100%" style="stop-color:#4752C4"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#57F287"/>
+      <stop offset="100%" style="stop-color:#43b581"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="248" fill="url(#bg)" stroke="#5865F2" stroke-width="4"/>
+  <circle cx="256" cy="256" r="230" fill="none" stroke="#57F287" stroke-width="1" opacity="0.3"/>
+
+  <!-- Shield -->
+  <g filter="url(#shadow)">
+    <path d="M256 80 L380 140 L380 260 C380 340 320 400 256 430 C192 400 132 340 132 260 L132 140 Z"
+          fill="url(#shieldGrad)" stroke="#7c8aff" stroke-width="2"/>
+    <!-- Shield inner border -->
+    <path d="M256 100 L360 150 L360 255 C360 325 310 378 256 405 C202 378 152 325 152 255 L152 150 Z"
+          fill="none" stroke="#8b9cff" stroke-width="1" opacity="0.4"/>
+  </g>
+
+  <!-- Star on shield -->
+  <g filter="url(#glow)">
+    <polygon points="256,140 272,190 325,190 282,222 298,275 256,245 214,275 230,222 187,190 240,190"
+             fill="url(#accent)"/>
+  </g>
+
+  <!-- F text -->
+  <text x="256" y="360" font-family="Arial, Helvetica, sans-serif" font-size="72"
+        font-weight="bold" fill="#ffffff" text-anchor="middle" letter-spacing="8">
+    F
+  </text>
+
+  <!-- Decorative dots -->
+  <circle cx="256" cy="470" r="4" fill="#5865F2"/>
+  <circle cx="236" cy="470" r="3" fill="#57F287" opacity="0.7"/>
+  <circle cx="276" cy="470" r="3" fill="#57F287" opacity="0.7"/>
+
+  <!-- Ring embellishments -->
+  <circle cx="256" cy="256" r="210" fill="none" stroke="#5865F2" stroke-width="0.5" opacity="0.2"
+          stroke-dasharray="4 4"/>
+</svg>
