@@ -21,9 +21,9 @@ function loadConfig() {
 }
 
 const config = loadConfig();
-const resolvedConfigPath = require.resolve('../config.json');
-delete require.cache[resolvedConfigPath];
-require.cache[resolvedConfigPath] = { exports: config };
+if (!fs.existsSync(path.join(__dirname, '../config.json'))) {
+  fs.writeFileSync(path.join(__dirname, '../config.json'), JSON.stringify(config, null, 2), 'utf8');
+}
 
 const client = new Client({
   intents: [
